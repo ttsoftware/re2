@@ -558,7 +558,8 @@ class RE2 {
     // If this happens too often, RE2 falls back on the NFA implementation.
 
     // For now, make the default budget something close to Code Search.
-    static const int kDefaultMaxMem = 8<<20;
+    //static const int kDefaultMaxMem = 8<<20;
+    static const int kDefaultMaxMem = 8<<25;
 
     enum Encoding {
       EncodingUTF8 = 1,
