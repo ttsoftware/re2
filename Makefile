@@ -245,18 +245,21 @@ shared-bigtest: $(STESTS) $(SBIGTESTS)
 benchmark: obj/test/regexp_benchmark
 
 install: obj/libre2.a obj/so/libre2.so
-	mkdir -p $(DESTDIR)$(includedir)/re2 $(DESTDIR)$(libdir)
+	mkdir -p $(DESTDIR)$(includedir)/re2 $(DESTDIR)$(libdir)/pkgconfig
 	$(INSTALL_DATA) $(INSTALL_HFILES) $(DESTDIR)$(includedir)/re2
 	$(INSTALL) obj/libre2.a $(DESTDIR)$(libdir)/libre2.a
 	$(INSTALL) obj/so/libre2.so $(DESTDIR)$(libdir)/libre2.so.$(SONAME).0.0
 	ln -sf libre2.so.$(SONAME).0.0 $(DESTDIR)$(libdir)/libre2.so.$(SONAME)
 	ln -sf libre2.so.$(SONAME).0.0 $(DESTDIR)$(libdir)/libre2.so
+	sed -e "s#@prefix@#${prefix}#" re2.pc >$(DESTDIR)$(libdir)/pkgconfig/re2.pc
 
 testinstall:
 	@mkdir -p obj
 	cp testinstall.cc obj
+ifneq ($(shell uname),Darwin)
 	(cd obj && $(CXX) -I$(DESTDIR)$(includedir) -L$(DESTDIR)$(libdir) testinstall.cc -lre2 -pthread -static -o testinstall)
 	obj/testinstall
+endif
 	(cd obj && $(CXX) -I$(DESTDIR)$(includedir) -L$(DESTDIR)$(libdir) testinstall.cc -lre2 -pthread -o testinstall)
 	LD_LIBRARY_PATH=$(DESTDIR)$(libdir) obj/testinstall
 

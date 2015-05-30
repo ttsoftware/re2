@@ -293,6 +293,11 @@ class RE2 {
   // Larger numbers are more expensive than smaller numbers.
   int ProgramSize() const;
 
+  // EXPERIMENTAL! SUBJECT TO CHANGE!
+  // Outputs the program fanout as a histogram bucketed by powers of 2.
+  // Returns the number of the largest non-empty bucket.
+  int ProgramFanout(map<int, int>* histogram) const;
+
   // Returns the underlying Regexp; not for general use.
   // Returns entire_regexp_ so that callers don't need
   // to know about prefix_ and prefix_foldcase_.
@@ -682,7 +687,7 @@ class RE2 {
   static inline Arg CRadix(unsigned int* x);
   static inline Arg CRadix(long* x);
   static inline Arg CRadix(unsigned long* x);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   static inline Arg CRadix(long long* x);
   static inline Arg CRadix(unsigned long long* x);
   #endif
@@ -693,7 +698,7 @@ class RE2 {
   static inline Arg Hex(unsigned int* x);
   static inline Arg Hex(long* x);
   static inline Arg Hex(unsigned long* x);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   static inline Arg Hex(long long* x);
   static inline Arg Hex(unsigned long long* x);
   #endif
@@ -704,7 +709,7 @@ class RE2 {
   static inline Arg Octal(unsigned int* x);
   static inline Arg Octal(long* x);
   static inline Arg Octal(unsigned long* x);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   static inline Arg Octal(long long* x);
   static inline Arg Octal(unsigned long long* x);
   #endif
@@ -787,7 +792,7 @@ class RE2::Arg {
   MAKE_PARSER(unsigned int,       parse_uint);
   MAKE_PARSER(long,               parse_long);
   MAKE_PARSER(unsigned long,      parse_ulong);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   MAKE_PARSER(long long,          parse_longlong);
   MAKE_PARSER(unsigned long long, parse_ulonglong);
   #endif
@@ -835,7 +840,7 @@ class RE2::Arg {
   DECLARE_INTEGER_PARSER(uint);
   DECLARE_INTEGER_PARSER(long);
   DECLARE_INTEGER_PARSER(ulong);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   DECLARE_INTEGER_PARSER(longlong);
   DECLARE_INTEGER_PARSER(ulonglong);
   #endif
@@ -865,7 +870,7 @@ MAKE_INTEGER_PARSER(int,                int)
 MAKE_INTEGER_PARSER(unsigned int,       uint)
 MAKE_INTEGER_PARSER(long,               long)
 MAKE_INTEGER_PARSER(unsigned long,      ulong)
-#ifdef RE2_HAVE_LONGLONG
+#if RE2_HAVE_LONGLONG
 MAKE_INTEGER_PARSER(long long,          longlong)
 MAKE_INTEGER_PARSER(unsigned long long, ulonglong)
 #endif

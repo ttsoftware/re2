@@ -9,14 +9,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include <stddef.h>         // For size_t
+#include <stddef.h>     // For size_t
 #include <assert.h>
 #include <stdarg.h>
 #include <time.h>
-#include <ctype.h>	// For isdigit, isalpha.
+#include <ctype.h>      // For isdigit, isalpha
 
 #if !defined(WIN32)
-#include <sys/time.h>  // For gettimeofday
+#include <sys/time.h>   // For gettimeofday
 #endif
 
 // C++
@@ -45,7 +45,7 @@ using std::sort;
 using std::swap;
 using std::make_pair;
 
-#if defined(__GNUC__) && !defined(USE_CXX0X) && !defined(_LIBCPP_ABI_VERSION) && !defined(OS_ANDROID)
+#if defined(__GNUC__) && !defined(USE_CXX0X) && !defined(_LIBCPP_ABI_VERSION)
 
 #include <tr1/unordered_set>
 using std::tr1::unordered_set;
@@ -53,7 +53,7 @@ using std::tr1::unordered_set;
 #else
 
 #include <unordered_set>
-#if defined(WIN32) || defined(OS_ANDROID)
+#if defined(WIN32)
 using std::tr1::unordered_set;
 #else
 using std::unordered_set;
@@ -92,13 +92,22 @@ typedef unsigned long ulong;
 typedef unsigned int uint;
 typedef unsigned short ushort;
 
+// Prevent the compiler from complaining about or optimizing away variables
+// that appear unused.
+#undef ATTRIBUTE_UNUSED
+#if defined(__GNUC__)
+#define ATTRIBUTE_UNUSED __attribute__ ((unused))
+#else
+#define ATTRIBUTE_UNUSED
+#endif
+
 // COMPILE_ASSERT causes a compile error about msg if expr is not true.
 #if __cplusplus >= 201103L
 #define COMPILE_ASSERT(expr, msg) static_assert(expr, #msg)
 #else
 template<bool> struct CompileAssert {};
 #define COMPILE_ASSERT(expr, msg) \
-  typedef CompileAssert<(bool(expr))> msg[bool(expr) ? 1 : -1]
+  typedef CompileAssert<(bool(expr))> msg[bool(expr) ? 1 : -1] ATTRIBUTE_UNUSED
 #endif
 
 // DISALLOW_COPY_AND_ASSIGN disallows the copy and operator= functions.
